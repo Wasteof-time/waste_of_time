@@ -13,8 +13,9 @@ def check_url(i):
 
 # Use threads to check all 9000 URLs concurrently
 with ThreadPoolExecutor(max_workers=50) as executor:
-    futures = {executor.submit(check_url, i): i for i in range(1000, 10000)}
+    futures = {executor.submit(check_url, i): i for i in range(5000, 6000)}
     for future in as_completed(futures):
+        print(future)
         result = future.result()
         if result:
             print(f"✅ Found valid URL: {result[1]}")
