@@ -51,24 +51,32 @@ for i in f:
     student_name = match.group(1).strip() if match else ""
     roll_no      = match.group(2).strip() if match else ""
 
-    practical_subjects = re.findall(
-        r"(SCIENCE|SOCIAL SCIENCE)\s+\d+\s+(\d+)\s+(\d+)\s+(\d+)\s+P", text
+    # ── FIXED REGEX ────────────────────────────────────────────────────────────
+    # Scraped text has subject name on one line and marks on the next line.
+    # SCIENCE is special: "SCIENCE ( Theory  + Practical )\n( 074 + 025 )   099"
+
+    def get_mark(subject, t):
+        m = re.search(rf'(?<!\w){re.escape(subject)}\s*\n\s*(\d+)', t)
+        return int(m.group(1)) if m else 0
+
+    science_match = re.search(
+        r'SCIENCE\s*\(.*?Theory.*?Practical.*?\)\s*\n.*?\)\s+(\d+)',
+        text, re.IGNORECASE
     )
 
-    theory_subjects = re.findall(
-        r"(TAMIL|ENGLISH|MATHS)\s+\d+\s+(\d+)\s+(\d+)\s+P", text
-    )
+    subject_marks = {
+        "TAMIL":          get_mark("TAMIL", text),
+        "ENGLISH":        get_mark("ENGLISH", text),
+        "MATHS":          get_mark("MATHS", text),
+        "SCIENCE":        int(science_match.group(1)) if science_match else 0,
+        "SOCIAL SCIENCE": get_mark("SOCIAL SCIENCE", text),
+    }
 
-    total = re.search(r"TOTAL\s+0*(\d+)", text).group(1)
+    total_match = re.search(r'TOTAL\s*\n\s*(\d+)', text)
+    total = total_match.group(1) if total_match else 0
+    # ── END FIXED REGEX ────────────────────────────────────────────────────────
 
     result = [["NAME" , student_name ] ,["ROLLNO" , roll_no]]
-
-    subject_marks = {}
-    for subj, theory, total_mark in theory_subjects:
-        subject_marks[subj] = int(total_mark)
-
-    for subj, theory, pra, total_mark in practical_subjects:
-        subject_marks[subj] = int(total_mark)
 
     order = ["TAMIL", "ENGLISH", "MATHS" , "SCIENCE", "SOCIAL SCIENCE"]
     for subj in order:
