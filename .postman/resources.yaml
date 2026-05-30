@@ -1,0 +1,8 @@
+# Use this workspace to collaborate
+workspace:
+  id: 2f330b65-5814-4890-830f-e897acac7708
+
+localResources:
+  docs:
+    - ..\C++\OpenGL\cpp\vendored\SDL\Xcode\SDL\pkg-support\resources\framework\INSTALL.md
+or\select2\LICENSE-SELECT2.md

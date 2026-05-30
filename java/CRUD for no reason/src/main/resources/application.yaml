@@ -1,0 +1,3 @@
+spring:
+  application:
+    name: CRUD for no reason
