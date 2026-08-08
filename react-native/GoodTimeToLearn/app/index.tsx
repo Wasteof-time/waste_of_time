@@ -2,7 +2,7 @@ import React from 'react';
 import { GestureResponderEvent, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 async function getAnswerFromThePythonServer(exp : string , getAns : any ){
-    const url = 'https://fastapi-python-boilerplate-z5qs.vercel.app/num';
+    const url = 'http://localhost:8080/num';
   
 
   const payload = {
