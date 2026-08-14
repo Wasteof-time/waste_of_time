@@ -1,5 +1,8 @@
 #include <iostream>
+#include <list>
+#include <chrono>
 
+#define LIMIT 10000
 
 struct ListNode {
     size_t data;
@@ -16,7 +19,7 @@ struct ListNode {
 class List {
 public:
     List() {
-        pointer = nullptr
+        pointer = nullptr;
         HEAD = pointer;
         END = pointer;
         size = 0;
@@ -57,5 +60,25 @@ private:
 
 
 int main() {
+
+    std::list<size_t> std_list {};
+    List my_list {};
+
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+    for (size_t i = 0 ; i < LIMIT ; i ++) {
+        std_list.push_back(10);
+    }
+
+    std::cout << "Time of finishing (std): " << std::chrono::high_resolution_clock::now() - start << std::endl;
+
+    start = std::chrono::high_resolution_clock::now();
+
+    for (size_t i = 0 ; i < LIMIT ; i ++) {
+        my_list.push_back(10);
+    }
+
+    std::cout << "Time of finishing (my): " << std::chrono::high_resolution_clock::now() - start << std::endl;
 
 }
